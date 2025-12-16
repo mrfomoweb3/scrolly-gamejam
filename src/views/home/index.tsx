@@ -5,12 +5,97 @@ import pkg from '../../../package.json';
 // ❌ DO NOT EDIT ANYTHING ABOVE THIS LINE
 
 export const HomeView: FC = () => {
+  const [showWelcome, setShowWelcome] = useState(true);
   const [activeTab, setActiveTab] = useState<'feed' | 'casino' | 'kids'>('feed');
 
+  // Sound function for welcome screen
+  const playWelcomeSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(523, audioContext.currentTime);
+      oscillator.type = 'triangle';
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.5);
+      
+      // Add a second note for a pleasant welcome sound
+      setTimeout(() => {
+        const oscillator2 = audioContext.createOscillator();
+        const gainNode2 = audioContext.createGain();
+        
+        oscillator2.connect(gainNode2);
+        gainNode2.connect(audioContext.destination);
+        
+        oscillator2.frequency.setValueAtTime(659, audioContext.currentTime);
+        oscillator2.type = 'triangle';
+        gainNode2.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator2.start(audioContext.currentTime);
+        oscillator2.stop(audioContext.currentTime + 0.5);
+      }, 200);
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+
+  const handleStartGames = () => {
+    playWelcomeSound();
+    setShowWelcome(false);
+  };
+
+  // Welcome Screen
+  if (showWelcome) {
+    return (
+      <div className="relative min-h-screen w-full overflow-hidden">
+        {/* Background GIF - Your Scrolly Games animated background */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-b from-purple-900 via-indigo-900 to-slate-900"
+          style={{
+            backgroundImage: `url('/backy.gif')`, // Your animated background GIF
+          }}
+        ></div>
+
+        {/* Play Button - Positioned at bottom center */}
+        <div className="relative z-10 flex min-h-screen flex-col items-center justify-end pb-20 lg:pb-32">
+          <button
+            onClick={handleStartGames}
+            className="group relative px-16 py-5 lg:px-20 lg:py-6 text-2xl lg:text-3xl font-bold text-white bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-110 active:scale-95 transform hover:-translate-y-2"
+          >
+            <span className="relative z-10 group-hover:animate-pulse">
+              ▶ PLAY
+            </span>
+            
+            {/* Animated glow effect */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-75 blur-xl group-hover:opacity-100 transition-opacity duration-300"></div>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Games Screen (existing content)
   return (
     <div className="flex min-h-screen flex-col bg-black text-white">
       {/* HEADER – fake Scrolly feed tabs */}
-      <header className="flex items-center justify-center border-b border-white/10 py-3">
+      <header className="flex items-center justify-between border-b border-white/10 py-3 px-4">
+        {/* Back to Welcome Button */}
+        <button
+          onClick={() => setShowWelcome(true)}
+          className="flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200 hover:scale-105 active:scale-95 text-white/80 hover:text-white"
+        >
+          <span className="text-sm">←</span>
+          <span className="text-xs lg:text-sm">Back</span>
+        </button>
+
         <div className="flex items-center gap-2 rounded-full bg-white/5 px-2 py-1 text-[11px] lg:text-[12px]">
           <button 
             onClick={() => setActiveTab('feed')}
@@ -37,6 +122,9 @@ export const HomeView: FC = () => {
             Kids
           </button>
         </div>
+
+        {/* Empty div for spacing */}
+        <div className="w-16"></div>
       </header>
 
       {/* MAIN – central game area (phone frame) */}
