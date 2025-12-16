@@ -52,32 +52,46 @@ export const HomeView: FC = () => {
     setShowWelcome(false);
   };
 
-  // Welcome Screen
+  // Welcome Screen - Same layout as games screen
   if (showWelcome) {
     return (
-      <div className="relative min-h-screen w-full overflow-hidden">
-        {/* Background GIF - Your Scrolly Games animated background */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-b from-purple-900 via-indigo-900 to-slate-900"
-          style={{
-            backgroundImage: `url('/backy.gif')`, // Your animated background GIF
-          }}
-        ></div>
-
-        {/* Play Button - Positioned at bottom center */}
-        <div className="relative z-10 flex min-h-screen flex-col items-center justify-end pb-20 lg:pb-32">
-          <button
-            onClick={handleStartGames}
-            className="group relative px-16 py-5 lg:px-20 lg:py-6 text-2xl lg:text-3xl font-bold text-white bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-110 active:scale-95 transform hover:-translate-y-2"
-          >
-            <span className="relative z-10 group-hover:animate-pulse">
-              ▶ PLAY
-            </span>
+      <div className="flex min-h-screen flex-col bg-black text-white">
+        {/* MAIN – central welcome area (same phone frame as games) */}
+        <main className="flex flex-1 items-center justify-center px-4 py-3 lg:px-8 lg:py-6">
+          <div className="relative aspect-[9/16] w-full max-w-sm lg:max-w-md xl:max-w-lg 2xl:max-w-xl h-[600px] lg:h-[700px] xl:h-[800px] 2xl:h-[900px] overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 shadow-[0_0_40px_rgba(56,189,248,0.35)] lg:shadow-[0_0_60px_rgba(56,189,248,0.4)]">
             
-            {/* Animated glow effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-75 blur-xl group-hover:opacity-100 transition-opacity duration-300"></div>
-          </button>
-        </div>
+            {/* Background GIF - Your Scrolly Games animated background */}
+            <div 
+              className="absolute inset-0 w-full h-full rounded-3xl bg-gradient-to-b from-purple-900 via-indigo-900 to-slate-900"
+              style={{
+                backgroundImage: `url('/backy.gif')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            ></div>
+
+            {/* Play Button - Positioned at bottom center */}
+            <div className="relative z-10 flex h-full w-full flex-col items-center justify-end px-4 pb-8 lg:pb-12">
+              <button
+                onClick={handleStartGames}
+                className="group relative px-8 py-3 lg:px-12 lg:py-4 text-lg lg:text-xl font-bold text-white bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-110 active:scale-95 transform hover:-translate-y-1"
+              >
+                <span className="relative z-10 group-hover:animate-pulse">
+                  ▶ PLAY
+                </span>
+                
+                {/* Animated glow effect */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-75 blur-xl group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            </div>
+          </div>
+        </main>
+
+        {/* FOOTER – tiny version text (same as games) */}
+        <footer className="flex h-5 lg:h-6 items-center justify-border-t border-white/10 px-2 text-[9px] text-slate-500">
+          <span>Scrolly · Enhanced Gaming Experience</span>
+        </footer>
       </div>
     );
   }
